@@ -1,7 +1,8 @@
 node_modules/
 dist/
-.sass-cache/
-Plentific-Code-Challenge-v3.PDF
 .idea
-app/bower_components
-node_modules
+app/bower_components/
+app/mock/config.js
+
+
+

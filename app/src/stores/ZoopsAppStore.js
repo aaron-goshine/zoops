@@ -3,34 +3,21 @@ var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var _ = require('lodash');
 
-
 var _state = {
-
+  data: null
 };
 
-function setItems(items) {
-  _state.items = items;
+function setItems(data) {
+  _state.data = data;
 }
 
-function setView(name) {
-  _state.view = name;
-}
-
-function sortItems(index) {
-  var keyMap = ["title","value","rating"];
-
-  _state.sortedBy = keyMap[index];
-  _state.items = _.sortBy(_state.items,keyMap[index]);
-}
-
-var ProductsStore = _.assign(new EventEmitter, {
+var ZoopsAppStore = _.assign(new EventEmitter, {
   getState() {
     return _state;
   },
   emitChange() {
     this.emit(AppConstants.CHANGE);
   },
-
   addChangeListener(callback) {
     this.on(AppConstants.CHANGE, callback);
   },
@@ -39,15 +26,17 @@ var ProductsStore = _.assign(new EventEmitter, {
   }
 });
 
-AppDispatcher.register((payload) => {
+AppDispatcher.register(function(payload) {
+  console.log(payload);
   var action = payload.action;
   switch (action.actionType) {
-    case AppConstants.INIT:
+    case AppConstants.RECEIVE_LISTINGS:
       setItems(action.data);
-      ProductsStore.emitChange();
+      ZoopsAppStore.emitChange();
       break;
   }
   return true;
 });
 
-module.exports = ProductsStore;
+
+module.exports = ZoopsAppStore;
