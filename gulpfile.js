@@ -12,7 +12,6 @@ var gulpCache = require('gulp-cache');
 var flux = require('flux');
 var gulpImagemin = require('gulp-imagemin');
 var gulpJest = require('gulp-jest');
-var gulpJshint = require('gulp-jshint');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var gulpRubySass = require('gulp-ruby-sass');
 var gulpSize = require('gulp-size');
