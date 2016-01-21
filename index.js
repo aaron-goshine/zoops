@@ -9,7 +9,7 @@ var forward = function (pattern) {
   return function (req, res, next) {
     if (req.url.match(pattern)) {
       var path = req.url.match(pattern)[1];
-      var url = ['http://api.zoopla.co.uk/api/v1/', path].join('/');
+      var url = ['http://api.zoopla.co.uk/', path].join('/');
 
       res.header('content-type', 'application/json');
       res.header('Access-Control-Allow-Origin', '*');
