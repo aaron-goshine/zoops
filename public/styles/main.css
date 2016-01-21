@@ -6006,9 +6006,8 @@ html {
   width: 300px;
   height: 48px;
   border: none; }
-
-.field-shadow:focus {
-  border: none; }
+  .field-shadow:focus {
+    border: none; }
 
 .field-shadow-wrapper {
   width: 300px !important;

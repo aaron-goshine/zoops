@@ -1,8 +1,5 @@
 node_modules/
-dist/
 .idea
-app/bower_components/
-app/mock/config.js
 
 
 
