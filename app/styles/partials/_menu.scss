@@ -1,0 +1,50 @@
+@mixin menu-item {
+  background-color: $link-color;
+  padding: $global-margin;
+  text-align: center;
+  color: white;
+}
+
+.short-menu {
+  display: inline-block;
+  @include menu-item;
+  @media (min-width: $tablet_and_larger) {
+    display: none;
+  }
+
+}
+
+// Here I have the navigation implemented using display type table
+// ---
+.main-menu {
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  @media (min-width: $tablet_and_larger) {
+    border-spacing: $global-margin;
+    border-collapse: separate;
+    display: table;
+    width: calc(100% + 2em);
+    margin-left: -1em;
+  }
+
+  ul.full-menu {
+    display: none;
+    @media (min-width: $tablet_and_larger) {
+      display: table-row;
+      width: 100% ;
+    }
+  }
+
+  ul.full-menu li {
+    @include menu-item;
+      display:table-cell;
+      // magic number 5 is the number of menu items
+      width: calc(100% / 5);
+  }
+}
+

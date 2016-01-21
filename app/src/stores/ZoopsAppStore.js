@@ -7,27 +7,26 @@ var _state = {
   data: null
 };
 
-function setItems(data) {
+function setItems (data) {
   _state.data = data;
 }
 
-var ZoopsAppStore = _.assign(new EventEmitter, {
-  getState() {
+var ZoopsAppStore = _.assign(new EventEmitter(), {
+  getState () {
     return _state;
   },
-  emitChange() {
+  emitChange () {
     this.emit(AppConstants.CHANGE);
   },
-  addChangeListener(callback) {
+  addChangeListener (callback) {
     this.on(AppConstants.CHANGE, callback);
   },
-  removeChangeListener(callback) {
+  removeChangeListener (callback) {
     this.removeListener(AppConstants.CHANGE, callback);
   }
 });
 
-AppDispatcher.register(function(payload) {
-  console.log(payload);
+AppDispatcher.register(function (payload) {
   var action = payload.action;
   switch (action.actionType) {
     case AppConstants.RECEIVE_LISTINGS:
@@ -37,6 +36,5 @@ AppDispatcher.register(function(payload) {
   }
   return true;
 });
-
 
 module.exports = ZoopsAppStore;

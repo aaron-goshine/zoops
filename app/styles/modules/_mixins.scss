@@ -1,0 +1,32 @@
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+ }
+
+@mixin wireframe-panel {
+  background-color: $wireframe-bg-color;
+  border: 1px dashed  $link-color;
+}
+
+@mixin box-ratio ($width_perc, $height_perc) {
+  position: relative;
+  width: $width_perc;
+  padding-bottom: $height_perc;
+
+  .media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+}
+

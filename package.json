@@ -2,9 +2,10 @@
   "name": "zoops",
   "version": "0.0.1",
   "description": "property search ",
-  "main": "gulpfile.js",
+  "main": "index.js",
   "dependencies": {
     "babel": "^5.8.23",
+    "ejs": "2.3.3",
     "babelify": "^6.3.0",
     "bootstrap-sass": "^3.3.5",
     "browserify": "latest",
@@ -12,6 +13,7 @@
     "d3": "^3.5.6",
     "del": "latest",
     "express": "latest",
+    "express-livereload": "0.0.24",
     "flux": "latest",
     "font-awesome": "latest",
     "gulp": "latest",
@@ -26,7 +28,7 @@
     "gulp-sass": "^2.0.4",
     "gulp-size": "latest",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-useref": "latest",
+    "gulp-useref": "^3.0.4",
     "gulp-util": "latest",
     "gulp-webserver": "latest",
     "jest": "latest",
@@ -35,16 +37,23 @@
     "path": "latest",
     "react": "latest",
     "react-bootstrap": "latest",
+    "react-dom": "^0.14.6",
     "react-googlemaps": "latest",
     "react-intl": "latest",
     "reactify": "latest",
     "reqwest": "latest",
+    "superagent": "^1.7.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "latest",
     "watchify": "latest"
   },
   "scripts": {
-    "test": "jtest"
+    "test": "jtest",
+    "build": "gulp",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "0.12.7"
   },
   "repository": {
     "type": "git",

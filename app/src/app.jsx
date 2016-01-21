@@ -1,18 +1,21 @@
 import React from 'react';
-import {Tabs,Tab} from 'react-bootstrap';
+import ReactDOM from 'react-dom';
+import {Tabs, Tab} from 'react-bootstrap';
 import MapComponent from './components/Map';
 import ChartComponent from './components/Chart';
 import ListComponent from './components/List';
 import SearchComponent from './components/Search';
 import AppActionCreator from './actions/AppActionCreator';
+
 window.React = React;
+
 class Zoops extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     AppActionCreator.init();
   }
 
-  render() {
+  render () {
     return (
       <div className="panel">
         <SearchComponent/>
@@ -31,4 +34,4 @@ class Zoops extends React.Component {
     );
   }
 }
-React.render(<Zoops/>, document.getElementById("app"));
+ReactDOM.render(<Zoops/>, document.getElementById('app'));

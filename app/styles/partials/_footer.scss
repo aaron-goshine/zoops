@@ -1,0 +1,8 @@
+#footer {
+  @include clearfix;
+  margin: $global-margin;
+  border:1px solid silver;
+  clear: both;
+  padding: $global-margin 0;
+}
+
