@@ -1,0 +1,8 @@
+   {
+  "name": "zoops ",
+  "description": "A generic of zoopla and google map integration",
+  "repository": "https://github.com/aaron-goshine/zoops",
+  "logo": "http://node-js-sample.herokuapp.com/iamges/logo.svg",
+  "keywords": ["node", "express", "static"],
+  "image": "heroku/nodejs"
+}
