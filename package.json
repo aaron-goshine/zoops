@@ -45,7 +45,8 @@
     "superagent": "^1.7.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "latest",
-    "watchify": "latest"
+    "watchify": "latest",
+    "request": "^2.64.0"
   },
   "scripts": {
     "test": "jtest",
@@ -73,7 +74,5 @@
   "browserify-shim": {
     "jquery": "$"
   },
-  "devDependencies": {
-    "request": "^2.64.0"
-  }
+  "devDependencies": {}
 }

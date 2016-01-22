@@ -15,9 +15,7 @@ var gulpJest = require('gulp-jest');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var gulpRubySass = require('gulp-ruby-sass');
 var gulpSize = require('gulp-size');
-var gulpUseref = require('gulp-useref');
 var gulpUtil = require('gulp-util');
-var gulpWebServer = require('gulp-webserver');
 var jest = require('jest');
 var reactify = require('reactify');
 var vinylSourceStream = require('vinyl-source-stream');
@@ -27,7 +25,7 @@ var sass = require('gulp-sass');
 var babel = require('babelify');
 var buffer = require('vinyl-buffer');
 
-var sourceFile = './app/src/app.jsx';
+var sourceFile = './source/src/app.jsx';
 var publicFolder = './public/';
 var scriptDestFolder = './public/scripts';
 var stylesDestFolder = './public/styles';
@@ -35,19 +33,19 @@ var destFileName = 'app.js';
 
 // sass
 gulp.task('sass', function () {
-  gulp.src('./app/styles/main.scss')
+  gulp.src('./source/styles/main.scss')
   .pipe(sass().on('error', sass.logError))
   .pipe(gulp.dest(stylesDestFolder));
 });
 
 // sass:watch
 gulp.task('sass:watch', function () {
-  gulp.watch('./app/styles/*.scss', ['sass']);
+  gulp.watch('./source/styles/*.scss', ['sass']);
 });
 
 // Styles
 gulp.task('styles', function () {
-  gulp.src('./app/src/styles/main.scss')
+  gulp.src('./source/src/styles/main.scss')
   .pipe(gulpRubySass({
     style: 'expanded',
     precision: 10
@@ -118,15 +116,14 @@ gulp.task('scripts', function () {
 
 // HTML
 gulp.task('html', function () {
-  return gulp.src('app/*.html')
-  .pipe(gulpUseref())
+  return gulp.src('source/*.html')
   .pipe(gulp.dest(publicFolder))
   .pipe(gulpSize());
 });
 
 // Images
 gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
+  return gulp.src('./source/images/**/*')
   .pipe(gulpCache(gulpImagemin({
     optimizationLevel: 3,
     progressive: true,
@@ -139,7 +136,7 @@ gulp.task('images', function () {
 // Test Jess
 gulp.task('jest', function () {
   var nodeModules = path.resolve('./node_modules');
-  return gulp.src('app/scripts/**/__tests__')
+  return gulp.src('./source/scripts/**/__tests__')
   .pipe(gulpJest({
     scriptPreprocessor: nodeModules + '/gulp-jest/preprocessor.js',
     unmockedModulePathPatterns: [nodeModules + '/react']
@@ -153,53 +150,44 @@ gulp.task('clean', function () {
 
 // Bundle
 gulp.task('bundle', ['scripts', 'bower'], function () {
-  return gulp.src('./app/*.html')
+  return gulp.src('./source/*.html')
   // .pipe(gulpUseref.assets())
   // .pipe(gulpUseref.restore())
   // .pipe(gulpUseref())
   .pipe(gulp.dest(publicFolder));
 });
 
-// Webserver
-gulp.task('serve', function () {
-  gulp.src(publicFolder)
-  .pipe(gulpWebServer({
-    livereload: true,
-    port: 9000
-  }));
-});
-
 // Bower helper
 gulp.task('bower', function () {
-  gulp.src('app/bower_components/**/*.js', {base: 'app/bower_components'})
+  gulp.src('./source/bower_components/**/*.js', {base: './source/bower_components'})
   .pipe(gulp.dest('./public/bower_components/'));
 });
 
 gulp.task('json', function () {
-  gulp.src('app/scripts/json/**/*.json', {base: 'app/scripts'})
+  gulp.src('./source/scripts/json/**/*.json', {base: './source/scripts'})
   .pipe(gulp.dest(scriptDestFolder));
 });
 
 // Robots.txt and favicon.ico
 gulp.task('extras', function () {
-  gulp.src(['app/*.txt', 'app/*.ico', 'app/mock/data.json'])
+  gulp.src(['./source/*.txt', './source/*.ico', './source/mock/data.json'])
   .pipe(gulp.dest(publicFolder))
   .pipe(gulpSize());
 });
 
 // Watch
-gulp.task('watch', ['html', 'bundle', 'serve'], function () {
+gulp.task('watch', ['html', 'bundle'], function () {
   // Watch .json files
-  gulp.watch('app/scripts/**/*.json', ['json']);
+  gulp.watch('./source/scripts/**/*.json', ['json']);
 
   // Watch .html files
-  gulp.watch('app/*.html', ['html']);
+  gulp.watch('./source/*.html', ['html']);
 
   // Watch .scss files
-  gulp.watch('app/styles/**/*.scss', ['styles']);
+  gulp.watch('./source/styles/**/*.scss', ['styles']);
 
   // Watch image files
-  gulp.watch('app/images/**/*', ['images']);
+  gulp.watch('./source/images/**/*', ['images']);
 });
 // Build
 gulp.task('build', ['html', 'bundle', 'images', 'extras']);
