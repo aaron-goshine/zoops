@@ -19,7 +19,7 @@ class ListComponent extends React.Component {
 
   render () {
     return (
-      <div className="tab-content  ">
+      <div {... this.props} className="tab-content  ">
         <table className="table table-bordered table-striped ">
           <thead>
             <tr>

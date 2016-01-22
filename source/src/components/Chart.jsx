@@ -10,7 +10,7 @@ class ChartComponent extends React.Component {
 
   render () {
     return (
-      <div className='tab-content' style={{'border': '1px solid black'}}>
+      <div {... this.props} className='tab-content'>
         <div id='chart'></div>
       </div>
     );

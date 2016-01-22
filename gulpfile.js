@@ -13,7 +13,6 @@ var flux = require('flux');
 var gulpImagemin = require('gulp-imagemin');
 var gulpJest = require('gulp-jest');
 var gulpLoadPlugins = require('gulp-load-plugins');
-var gulpRubySass = require('gulp-ruby-sass');
 var gulpSize = require('gulp-size');
 var gulpUtil = require('gulp-util');
 var jest = require('jest');
@@ -41,18 +40,6 @@ gulp.task('sass', function () {
 // sass:watch
 gulp.task('sass:watch', function () {
   gulp.watch('./source/styles/*.scss', ['sass']);
-});
-
-// Styles
-gulp.task('styles', function () {
-  gulp.src('./source/src/styles/main.scss')
-  .pipe(gulpRubySass({
-    style: 'expanded',
-    precision: 10
-  }))
-  .pipe(gulpAutoprefixer('last 1 version'))
-  .pipe(gulp.dest(stylesDestFolder))
-  .pipe(gulpSize());
 });
 
 // Script
@@ -184,7 +171,7 @@ gulp.task('watch', ['html', 'bundle'], function () {
   gulp.watch('./source/*.html', ['html']);
 
   // Watch .scss files
-  gulp.watch('./source/styles/**/*.scss', ['styles']);
+  gulp.watch('./source/styles/**/*.scss', ['sass']);
 
   // Watch image files
   gulp.watch('./source/images/**/*', ['images']);

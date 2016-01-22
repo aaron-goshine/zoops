@@ -1,26 +1,50 @@
+/**********************************************
+// Mixin file
+/**********************************************/
+
+/// @access public
+/// @mixin
+/// this is a standard implementation of commonly
+/// used clear fix to clear float and inline element with the
+/// document flow/ clear
+
 @mixin clearfix {
   &:before,
   &:after {
     content: " ";
     display: table;
   }
-
   &:after {
     clear: both;
   }
  }
+
+/// @access public
+/// @mixin
+///
+/// this is a simple wire frame mixin use starter declaration when mocking up
+/// wireframes
 
 @mixin wireframe-panel {
   background-color: $wireframe-bg-color;
   border: 1px dashed  $link-color;
 }
 
+/// @access public
+/// @mixin
+/// @param {float} $width_perc
+/// @param {float} $height_perc
+///
+/// used to generate block level element of a specific ration
+/// will affect style properties of immediate child element
+
 @mixin box-ratio ($width_perc, $height_perc) {
   position: relative;
   width: $width_perc;
   padding-bottom: $height_perc;
 
-  .media {
+  &> * {
+    display: block;
     position: absolute;
     top: 0;
     right: 0;

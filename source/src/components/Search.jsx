@@ -68,7 +68,7 @@ class ListComponent extends React.Component {
   }
 
   renderAutoCompete () {
-    if (!this.state.showAutoComplete) return;
+    if (this.state.suggestions.length < 1) return;
     return (
       <ul key="autocomplete" className="auto-complete-list">
         {this.state.suggestions.map((item, index) => {

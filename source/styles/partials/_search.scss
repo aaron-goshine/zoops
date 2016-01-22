@@ -1,9 +1,3 @@
-
-.search-form form {
-  position: relative;
-  width: 400px;
-}
-
 .auto-complete-list {
   margin: 0;
   padding: 0;
@@ -34,11 +28,12 @@
 }
 
 .search-form {
-  padding: 20px;
-  width: 860px;
+  right: 0;
+  position: absolute;
+  width: 400px;
   form {
     width: 70%;
-    margin: 0 auto;
+    margin: 0;
   }
 }
 
@@ -46,16 +41,18 @@
   position: absolute;
   background: none;
   display: block;
-  padding: 20px;
-  font-size: 13px;
+  padding: 20px 0 20px 20px ;
+  font-size: 1em;
   margin: 0;
   top: 0;
   left: 0;
   width: 300px;
-  height: 48px;
   border: none;
+  height: 1em;
+
   &:focus {
     border: none;
+    outline: none;
   }
 }
 
@@ -68,4 +65,5 @@
 .field-shadow-bg {
   color: #adadad;
 }
+
 
