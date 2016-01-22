@@ -14,22 +14,26 @@ var AppActions = {
       pl_short: 'false',
       area: 'London'
     };
-
-    request.get(config.LISTINGS_URL)
-    .query(paramData)
-    .set('Accept', 'application/json')
-    .end(function (err, res) {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      AppDispatcher.handleServerAction({
-        actionType: AppConstants.RECEIVE_LISTINGS,
-        data: res.body
+    window.clearTimeout(this.timeout);
+    this.timeout = window.setTimeout(() => {
+      request.get(config.LISTINGS_URL)
+      .query(paramData)
+      .set('Accept', 'application/json')
+      .end(function (err, res) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        AppDispatcher.handleServerAction({
+          actionType: AppConstants.RECEIVE_LISTINGS,
+          data: res.body
+        });
       });
-    });
+    }, 1000);
   },
   getListing (term) {
+    if (term.length < 3) return;
+
     var paramData = {
       keywords: '',
       listing_status: 'sale',
@@ -40,36 +44,41 @@ var AppActions = {
       pl_short: 'false',
       area: term
     };
-
-    request.get(config.LISTINGS_URL)
-    .query(paramData)
-    .set('Accept', 'application/json')
-    .end(function (err, res) {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      AppDispatcher.handleServerAction({
-        actionType: AppConstants.RECEIVE_LISTINGS,
-        data: res.body
+    window.clearTimeout(this.timeout);
+    this.timeout = window.setTimeout(() => {
+      request.get(config.LISTINGS_URL)
+      .query(paramData)
+      .set('Accept', 'application/json')
+      .end(function (err, res) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        AppDispatcher.handleServerAction({
+          actionType: AppConstants.RECEIVE_LISTINGS,
+          data: res.body
+        });
       });
     });
   },
   getAutoComplete (term) {
-    request.get(config.LISTINGS_ACOM_URL)
-    .query({search_term: term})
-    .query({search_type: 'listings'})
-    .set('Accept', 'application/json')
-    .end(function (err, res) {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      AppDispatcher.handleServerAction({
-        actionType: AppConstants.AUTO_COMPLETE,
-        data: res.body
+    window.clearTimeout(this.timeout);
+    this.timeout = window.setTimeout(() => {
+      request.get(config.LISTINGS_ACOM_URL)
+      .query({search_term: term})
+      .query({search_type: 'listings'})
+      .set('Accept', 'application/json')
+      .end(function (err, res) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        AppDispatcher.handleServerAction({
+          actionType: AppConstants.AUTO_COMPLETE,
+          data: res.body
+        });
       });
-    });
+    }, 1000);
   },
   cleanAutoComplete () {
     AppDispatcher.handleServerAction({
