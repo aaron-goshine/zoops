@@ -8,26 +8,25 @@ var _state = {
   selectedIndex: 0
 };
 
-function setItems(data) {
-  _state.suggestions = data.suggestions;
+function setItems (data) {
+  _state.suggestions = data.suggestions || [];
 }
 
-function clearItems() {
+function clearItems () {
   _state = {
     suggestions: []
   };
 }
 
-function upArrowSelectIndex() {
-  console.log(_state.selectedIndex );
+function upArrowSelectIndex () {
   if (_state.selectedIndex <= 0) {
-    _state.selectedIndex = (_state.suggestions.length -1);
+    _state.selectedIndex = (_state.suggestions.length - 1);
   } else {
     _state.selectedIndex--;
   }
 }
 
-function downArrowSelectIndex() {
+function downArrowSelectIndex () {
   if (_state.selectedIndex >= (_state.suggestions.length - 1)) {
     _state.selectedIndex = 0;
   } else {
@@ -35,35 +34,35 @@ function downArrowSelectIndex() {
   }
 }
 
-function selectByIndex(index) {
-    _state.selectedIndex = index;
+function selectByIndex (index) {
+  _state.selectedIndex = index;
 }
 
-
-var SearchStore = _.assign(new EventEmitter, {
-  getState() {
+var SearchStore = _.assign(new EventEmitter(), {
+  getState () {
     return _state;
   },
-  getSuggestions() {
+  getSuggestions () {
     return _state.suggestions;
   },
-  getSelectedIndex() {
+  getSelectedIndex () {
     return _state.selectedIndex;
   },
-  getSelectedSuggestions() {
-    if (_state.suggestions.length-1 >= _state.selectedIndex) {
-      return (_state.suggestions[_state.selectedIndex].value ).toLowerCase();
-    } else {
-      return "";
+  getSelectedSuggestions () {
+    if (!_state.suggestions) return '';
+
+    if ((_state.suggestions.length - 1) >= _state.selectedIndex) {
+      return (_state.suggestions[_state.selectedIndex].value).toLowerCase();
     }
+    return '';
   },
-  emitChange() {
+  emitChange () {
     this.emit(AppConstants.CHANGE);
   },
-  addChangeListener(callback) {
+  addChangeListener (callback) {
     this.on(AppConstants.CHANGE, callback);
   },
-  removeChangeListener(callback) {
+  removeChangeListener (callback) {
     this.removeListener(AppConstants.CHANGE, callback);
   }
 });

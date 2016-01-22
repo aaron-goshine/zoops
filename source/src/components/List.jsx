@@ -43,10 +43,10 @@ class ListComponent extends React.Component {
       </tr>
     </thead>
     <tbody>
-      {this.state.listing.map((item) => {
+      {this.state.listing.map((item, i) => {
         var price = Number(item.price);
         return (
-          <tr key={item.listing_id}>
+          <tr key={item.listing_id + i}>
             <td className="property-col">{item.agent_name}</td>
             <td className="price-col">
               £{(price >= 1000000) ? (price / 1000000) + 'M' : ((price > 1000) ? (price / 1000) + 'K' : price)}

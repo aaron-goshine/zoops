@@ -70,13 +70,14 @@ class ListComponent extends React.Component {
   renderAutoCompete () {
     if (!this.state.showAutoComplete) return;
     return (
-      <ul className='auto-complete-list'>
+      <ul key="autocomplete" className="auto-complete-list">
         {this.state.suggestions.map((item, index) => {
           var selectedClassName = '';
           if (this.state.selectedIndex === index) {
             selectedClassName = 'selected';
           }
-          return (<li key={item.identifier}
+
+          return (<li key={index}
             className={selectedClassName}
             data-index={index}
             onClick={(event) => {
@@ -89,7 +90,7 @@ class ListComponent extends React.Component {
   }
 
   onFieldChange () {
-    var term = this.refs.search.getDOMNode().value;
+    var term = this.refs.search.value;
 
     if (!term && term.length > 3) {
       this.setState({'term': term});
@@ -101,6 +102,7 @@ class ListComponent extends React.Component {
   }
 
   onChange () {
+    console.log(this.getStateFromStore());
     this.setState(this.getStateFromStore());
   }
 
