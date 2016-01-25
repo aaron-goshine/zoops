@@ -10,7 +10,7 @@ class ChartComponent extends React.Component {
 
   render () {
     return (
-      <div {... this.props} className='tab-content'>
+      <div {...this.props} className='tab-content'>
         <div id='chart'></div>
       </div>
     );
@@ -25,78 +25,107 @@ class ChartComponent extends React.Component {
   }
 
   renderChart () {
-    var svgWidth = 860;
+    var baseWidth = 420;
     var svgHeight = 420;
-    var spacer = 10;
-    var margin = {left: 80, right: 80, top: 20, bottom: 40};
-    var chartHeight = (svgHeight - margin.top - margin.bottom);
+    var spacer = 5;
+    var margin = 40;
+    var chartHeight = (svgHeight - margin * 2.5);
     var data = this.state.propertyAverages;
     var labelForBeds = this.state.preservedKeys;
     var columnCount = data.length;
-    var columnWidth = (((svgWidth - margin.left - margin.right) - (spacer * (columnCount - 1))) / data.length);
+
+    var baseSvgWidth = baseWidth - ((margin * 2) + (spacer * (columnCount - 1)));
+    var columnWidthPerc = ((baseSvgWidth / columnCount) / baseWidth) * 100;
+    var spacerPerc = (spacer / baseWidth) * 100;
 
     var yScale = d3.scale.linear()
-      .domain([d3.max(data), 0])
-      .range([chartHeight, 0]);
+    .domain([d3.max(data), 0])
+    .range([chartHeight, 0]);
 
     d3.select('svg')
-      .remove();
+    .remove();
 
+    // main chart handle
     var chart = d3.select('#chart')
-      .append('svg')
-      .attr({'width': svgWidth, 'height': svgHeight});
+    .append('svg')
+    .attr({'width': '100%', 'height': svgHeight});
 
-    chart.selectAll('g')
-      .attr('class', 'bars')
-      .data(data)
-      .enter()
-      .append('g')
-      .append('rect')
-      .attr('width', columnWidth)
-      .attr('height', function (d) {
-        return yScale(d);
-      })
-      .attr('fill', '#ADD8E6')
-      .attr('transform', (d, i) => {
-        var x = (i * (columnWidth + spacer)) + margin.left;
-        var y = (svgHeight - margin.bottom - margin.top - yScale(d) + margin.top);
-        return 'translate( ' + x + ',' + y + ')';
-      });
+    // group containing the vertical bars
+    var barGroup = chart.append('g')
+    .attr('transform', () => {
+      return 'translate( ' + margin + ',' + margin + ')';
+    });
 
-    chart.selectAll('.bars')
-      .data(data)
-      .enter()
-      .append('text')
-      .attr('class', 'bars-prices')
-      .attr('text-anchor', 'middle')
-      .attr('transform', (d, i) => {
-        var x = (i * (columnWidth + spacer)) + margin.left + columnWidth / 2;
-        var y = (svgHeight - margin.bottom - margin.top - yScale(d) + margin.top) - 3;
-        return 'translate( ' + x + ',' + y + ')';
-      })
-      .text((d) => {
-        var mil = 1000000;
-        var kil = 1000;
-        var twoDecimal = (n) => {
-          return Math.round((n * 100)) / 100;
-        };
-        return '£' + ((d >= mil) ? twoDecimal(d / mil) + 'M' : (twoDecimal(d > kil) ? twoDecimal(d / kil) + 'K' : d));
-      });
+    // group containing the top labels
+    var labelGroup = chart.append('g')
+    .attr('transform', () => {
+      return 'translate( ' + margin + ',' + margin + ')';
+    });
 
-    chart.selectAll('.bars')
-      .data(data)
-      .enter()
-      .append('text')
-      .attr('class', 'bars-labels')
-      .attr('text-anchor', 'middle')
-      .attr('transform', (d, i) => {
-        var x = (i * (columnWidth + spacer)) + margin.left + columnWidth / 2;
-        var y = (svgHeight - margin.bottom + margin.top);
-        return 'translate( ' + x + ',' + y + ')';
-      })
-      .text((d, i) => {
-        return labelForBeds[i] + ' beds';
-      });
+    // group containing the bottom labels
+    var labelGroup2 = chart.append('g')
+    .attr('transform', () => {
+      return 'translate( ' + margin + ',' + margin + ')';
+    });
+
+    // creating and appending the vertical bars to the
+    // bars groups
+    barGroup.selectAll('rect')
+    .data(data)
+    .enter()
+    .append('rect')
+    .attr('width', columnWidthPerc + '%')
+    .attr('height', function (d) {
+      return yScale(d) - margin;
+    })
+    .attr('fill', '#ADD8E6')
+    .attr('x', (d, i) => {
+      var availableSpace = 100 - columnWidthPerc * columnCount;
+      return (i * (columnWidthPerc + availableSpace / columnCount - 1)) + '%';
+    })
+    .attr('y', (d, i) => {
+      return (svgHeight - margin - yScale(d));
+    });
+
+    // Creating and appending text elements to server as the top
+    // labels for each bars
+    labelGroup.selectAll('text')
+    .data(data)
+    .enter()
+    .append('text')
+    .attr('width', columnWidthPerc + '%')
+    .attr('text-anchor', 'middle')
+    .attr('x', (d, i) => {
+      var availableSpace = 100 - columnWidthPerc * columnCount;
+      return (i * ((columnWidthPerc + availableSpace / columnCount - 1)) + columnWidthPerc / 2) + '%';
+    })
+    .attr('y', (d, i) => {
+      return (svgHeight - margin * 1.5 - yScale(d));
+    })
+    .text((d) => {
+      var mil = 1000000;
+      var kil = 1000;
+      var twoDecimal = (n) => {
+        return Math.round((n * 100)) / 100;
+      };
+      return '£' + ((d >= mil) ? twoDecimal(d / mil) + 'M' : (twoDecimal(d > kil) ? twoDecimal(d / kil) + 'K' : d));
+    });
+
+    // Creating and appending text elements to server as the bottom labels
+    // for each bar
+    labelGroup2.selectAll('text')
+    .data(data)
+    .enter()
+    .append('text')
+    .attr('text-anchor', 'middle')
+    .attr('x', (d, i) => {
+      var availableSpace = 100 - columnWidthPerc * columnCount;
+      return (i * ((columnWidthPerc + availableSpace / columnCount - 1)) + columnWidthPerc / 2) + '%';
+    })
+    .attr('y', svgHeight - margin)
+    .text((d, i) => {
+      return labelForBeds[i] + ' beds';
+    });
   }
 
   onChange () {

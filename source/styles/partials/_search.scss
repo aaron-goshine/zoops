@@ -5,7 +5,9 @@
   z-index: 1000;
   background-color: #ffffff;
   border: 1px solid lightgray;
-  width: 300px;
+  width: 400px;
+  border-radius: 5px;
+  overflow: hidden;
 
   li {
     margin: 0;
@@ -28,8 +30,7 @@
 }
 
 .search-form {
-  right: 0;
-  position: absolute;
+  float: right;
   width: 400px;
   form {
     width: 70%;

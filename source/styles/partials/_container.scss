@@ -34,4 +34,16 @@
   position: relative;
 }
 
+.btn-toolbar {
+  height: 60px;
+  margin-bottom: 2em;
 
+  button {
+    height: 60px;
+    color: #555555;
+    text-align: center;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}

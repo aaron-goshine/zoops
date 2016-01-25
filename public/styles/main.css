@@ -3330,6 +3330,17 @@ input[type="button"].btn-block {
 #app {
   position: relative; }
 
+.btn-toolbar {
+  height: 60px;
+  margin-bottom: 2em; }
+  .btn-toolbar button {
+    height: 60px;
+    color: #555555;
+    text-align: center;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 4px; }
+
 .auto-complete-list {
   margin: 0;
   padding: 0;
@@ -3337,7 +3348,9 @@ input[type="button"].btn-block {
   z-index: 1000;
   background-color: #ffffff;
   border: 1px solid lightgray;
-  width: 300px; }
+  width: 400px;
+  border-radius: 5px;
+  overflow: hidden; }
   .auto-complete-list li {
     margin: 0;
     padding: 5px 10px;
@@ -3353,8 +3366,7 @@ input[type="button"].btn-block {
   background-color: lightblue; }
 
 .search-form {
-  right: 0;
-  position: absolute;
+  float: right;
   width: 400px; }
   .search-form form {
     width: 70%;
