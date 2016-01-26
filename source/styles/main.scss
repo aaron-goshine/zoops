@@ -1,28 +1,9 @@
 // Core variables and mixins
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
-
-// Reset and dependencies
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/normalize";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/glyphicons";
-
-// Core CSS
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/tables";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/forms";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/buttons";
-
-// Components
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/dropdowns";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/button-groups";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/input-groups";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/navs";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/navbar";
-@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
+@import "../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 
 @import "./modules/mixins.scss";
 @import "./modules/variables.scss";
 
-@import "./partials/chart.scss";
 @import "./partials/container.scss";
 @import "./partials/search.scss";
 @import "./partials/table.scss";

@@ -20,40 +20,44 @@ class ListComponent extends React.Component {
   render () {
     return (
       <div className="search-form">
-        <form className="form-inline" onSubmit={this.handleSubmit}
-          onMouseLeave={() => {
-            if (!this.state.searchInFocus) {
-              this.setState({showAutoComplete: false});
-            }
-          }}>
+        <form className="form-inline">
           <div className="form-group">
             <div className="input-group">
               <div className="form-control field-shadow-wrapper">
-                <input type="text" className="field-shadow field-shadow-bg"
-                  readOnly={true}
-                  value={this.state.selectedSuggestion}/>
                 <input type="text" ref="search" className="field-shadow"
                   placeholder="Search term"
-                  onChange={this.onFieldChange.bind(this)} value={this.state.term}
+                  onChange={this.onFieldChange.bind(this)} value={this.getSelectedTerm()}
 
                   onBlur={() => {
-                    this.setState({searchInFocus: false});
+                    this.setState({showAutoComplete: false});
                   }}
                   onFocus={() => {
                     this.setState({showAutoComplete: true});
-                    this.setState({searchInFocus: true});
                   }}
                   onKeyDown={(e) => {
                     switch (e.which) {
+                      // key 37 is the left arrow
+                      // key 40 is the down arrow
+                      case 37:
                       case 40:
+                        e.preventDefault();
+                        this.setState({keySelected: true});
                         AppActionCreator.downArrowSelect();
                         break;
+                      // key 38 is the up arrow
+                      // key 39 is the right arrow
                       case 38:
+                      case 39:
+                        e.preventDefault();
+                        this.setState({keySelected: true});
                         AppActionCreator.upArrowSelect();
                         break;
+                      // key 13 is the enter key by default
                       case 13:
-                        this.handleSubmit();
+                        this.handleSubmit(e);
                         break;
+                      default:
+                        this.setState({keySelected: false});
                     }
                   }}
                   placeholder="Where do you want to live in UK?"/>
@@ -68,7 +72,7 @@ class ListComponent extends React.Component {
   }
 
   renderAutoCompete () {
-    if (this.state.suggestions.length < 1) return;
+    if (this.state.suggestions.length < 1 || !this.state.showAutoComplete) return;
     return (
       <ul key="autocomplete" className="auto-complete-list">
         {this.state.suggestions.map((item, index) => {
@@ -102,16 +106,22 @@ class ListComponent extends React.Component {
   }
 
   onChange () {
-    console.log(this.getStateFromStore());
     this.setState(this.getStateFromStore());
   }
 
-  handleSubmit () {
+  handleSubmit (event) {
+    event.preventDefault();
     var area = this.state.selectedSuggestion;
     AppActionCreator.getListing(area);
     this.setState({showAutoComplete: false});
   }
-
+  getSelectedTerm () {
+    var term = '';
+    if (this.state.keySelected) {
+      return this.state.selectedSuggestion;
+    }
+    return this.state.term;
+  }
   getStateFromStore () {
     return {
       suggestions: SearchStore.getSuggestions(),

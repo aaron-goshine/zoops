@@ -27,6 +27,7 @@ var _hidden = {'display': 'none'};
 class Zoops extends React.Component {
   constructor (props) {
     super(props);
+
     // default state of the application is the make
     // Tab #1 visible
     this.state = {'tab': 1};
@@ -58,9 +59,8 @@ class Zoops extends React.Component {
         }}>Chart
       </button>
     </nav>
-        <SearchComponent/>
+    <SearchComponent/>
   </div>
-
     <div className="panel">
       <MapComponent style={this.state.tab === 1 ? _visible : _hidden} />
       <ListComponent style={this.state.tab === 2 ? _visible : _hidden} />
