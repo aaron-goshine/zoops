@@ -20,25 +20,25 @@ class ListComponent extends React.Component {
   render () {
     return (
       <div {... this.props} className="tab-content  ">
-        <table className="table table-bordered table-striped ">
-          <thead>
+        <table className="table">
+          <thead className="thead-inverse">
             <tr>
               <th className="property-col" onClick={() => {
                 AppActionCreator.sortByIndex(0);
-              }}>&#x256A;  Property
+              }}> Property
             </th>
             <th className="price-col" onClick={() => {
               AppActionCreator.sortByIndex(1);
-            }}>&#x256A; Price
+            }}>Price
           </th>
           <th className="bedrooms-col"
             onClick={() => {
               AppActionCreator.sortByIndex(2);
-            }}>&#x256A; Bedrooms
+            }}>Bedrooms
           </th>
           <th className="published-col" onClick={() => {
             AppActionCreator.sortByIndex(3);
-          }}>&#x256A; Published
+          }}> Published
         </th>
       </tr>
     </thead>

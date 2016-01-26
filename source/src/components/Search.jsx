@@ -1,7 +1,6 @@
 import React from 'react';
 import SearchStore from '../stores/SearchStore';
 import AppActionCreator from '../actions/AppActionCreator';
-import _ from 'lodash';
 
 class ListComponent extends React.Component {
   constructor (props) {
@@ -19,74 +18,80 @@ class ListComponent extends React.Component {
 
   render () {
     return (
-      <div className="search-form">
-        <form className="form-inline">
-          <div className="form-group">
-            <div className="input-group">
-              <div className="form-control field-shadow-wrapper">
-                <input type="text" ref="search" className="field-shadow"
-                  placeholder="Search term"
-                  onChange={this.onFieldChange.bind(this)} value={this.getSelectedTerm()}
-
-                  onBlur={() => {
-                    this.setState({showAutoComplete: false});
-                  }}
-                  onFocus={() => {
-                    this.setState({showAutoComplete: true});
-                  }}
-                  onKeyDown={(e) => {
-                    switch (e.which) {
-                      // key 37 is the left arrow
-                      // key 40 is the down arrow
-                      case 37:
-                      case 40:
-                        e.preventDefault();
-                        this.setState({keySelected: true});
-                        AppActionCreator.downArrowSelect();
-                        break;
-                      // key 38 is the up arrow
-                      // key 39 is the right arrow
-                      case 38:
-                      case 39:
-                        e.preventDefault();
-                        this.setState({keySelected: true});
-                        AppActionCreator.upArrowSelect();
-                        break;
-                      // key 13 is the enter key by default
-                      case 13:
-                        this.handleSubmit(e);
-                        break;
-                      default:
-                        this.setState({keySelected: false});
-                    }
-                  }}
-                  placeholder="Where do you want to live in UK?"/>
-              </div>
-              <div className="input-group-addon" onClick={this.handleSubmit}>Search</div>
-            </div>
+      <form className="search-form form-inline pull-right">
+        <div className="input-group">
+          <input ref="search"
+            type="text"
+            className="form-control"
+            onChange={this.onFieldChange.bind(this)}
+            value={this.getSelectedTerm()}
+            onBlur={this.onBlur.bind(this)}
+            onFocus={this.onFocus.bind(this)}
+            onKeyDown={this.onKeyDown.bind(this)}
+            placeholder="Enter a uk location"
+            />
+            <div className="input-group-addon"
+              onClick={this.handleSubmit.bind(this)}>Search</div>
           </div>
           {this.renderAutoCompete()}
         </form>
-      </div>
     );
   }
 
+  onBlur () {
+    window.clearTimeout(window.timeoutHandle);
+    window.timeoutHandle = setTimeout(() => {
+      this.setState({showAutoComplete: false});
+    }, 3000);
+  }
+
+  onFocus () {
+    window.clearTimeout(window.timeoutHandle);
+    this.setState({showAutoComplete: true});
+  }
+
+  onKeyDown (event) {
+    switch (event.which) {
+      // key 37 is the left arrow
+      // key 40 is the down arrow
+      case 37:
+      case 40:
+        event.preventDefault();
+        this.setState({keySelected: true});
+        AppActionCreator.downArrowSelect();
+        break;
+        // key 38 is the up arrow
+        // key 39 is the right arrow
+      case 38:
+      case 39:
+        event.preventDefault();
+        this.setState({keySelected: true});
+        AppActionCreator.upArrowSelect();
+        break;
+        // key 13 is the enter key by default
+      case 13:
+        this.handleSubmit(event);
+        break;
+      default:
+        this.setState({keySelected: false});
+    }
+  }
   renderAutoCompete () {
     if (this.state.suggestions.length < 1 || !this.state.showAutoComplete) return;
     return (
-      <ul key="autocomplete" className="auto-complete-list">
+      <ul key="autocomplete" className="list-group auto-complete-list">
         {this.state.suggestions.map((item, index) => {
-          var selectedClassName = '';
+          var activeClass = '';
           if (this.state.selectedIndex === index) {
-            selectedClassName = 'selected';
+            activeClass = ' list-group-item-info ';
           }
 
           return (<li key={index}
-            className={selectedClassName}
+            className={'list-group-item' + activeClass}
             data-index={index}
             onClick={(event) => {
-              AppActionCreator.selectByIndex(event.target.getAttribute('data-index'));
-              this.handleSubmit();
+              AppActionCreator.selectByIndex(index);
+              this.handleSubmit(event);
             }}>{item.value}</li>);
         })}
       </ul>
