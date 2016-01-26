@@ -29,7 +29,7 @@ class ChartComponent extends React.Component {
     var svgHeight = 420;
     var spacer = 5;
     var margin = 40;
-    var chartHeight = (svgHeight - margin * 2.5);
+    var chartHeight = (svgHeight - margin * 1.5);
     var data = this.state.propertyAverages;
     var labelForBeds = this.state.preservedKeys;
     var columnCount = data.length;
@@ -84,7 +84,7 @@ class ChartComponent extends React.Component {
       return (i * (columnWidthPerc + availableSpace / columnCount - 1)) + '%';
     })
     .attr('y', (d, i) => {
-      return (svgHeight - margin - yScale(d));
+      return (chartHeight - yScale(d));
     });
 
     // Creating and appending text elements to server as the top
@@ -100,7 +100,7 @@ class ChartComponent extends React.Component {
       return (i * ((columnWidthPerc + availableSpace / columnCount - 1)) + columnWidthPerc / 2) + '%';
     })
     .attr('y', (d, i) => {
-      return (svgHeight - margin * 1.5 - yScale(d));
+      return (chartHeight - margin * 0.5 - yScale(d));
     })
     .text((d) => {
       var mil = 1000000;
@@ -122,7 +122,7 @@ class ChartComponent extends React.Component {
       var availableSpace = 100 - columnWidthPerc * columnCount;
       return (i * ((columnWidthPerc + availableSpace / columnCount - 1)) + columnWidthPerc / 2) + '%';
     })
-    .attr('y', svgHeight - margin)
+    .attr('y', chartHeight - margin * 0.5)
     .text((d, i) => {
       return labelForBeds[i] + ' beds';
     });
