@@ -76,7 +76,8 @@ class ChartComponent extends React.Component {
     .append('rect')
     .attr('width', columnWidthPerc + '%')
     .attr('height', function (d) {
-      return yScale(d) - margin;
+      var height = yScale(d) - margin;
+      return height > 0 ? height : 1;
     })
     .attr('fill', '#ADD8E6')
     .attr('x', (d, i) => {
