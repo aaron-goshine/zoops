@@ -1,6 +1,6 @@
 import React from 'react';
 import MapStore from '../stores/MapStore';
-
+import _ from 'lodash';
 /**
  * @private
  * @var _mapHandle
@@ -15,28 +15,24 @@ var _mapMarkers = [];
 
 /**
  * @class
- * @name ZoopsMapComponent
+ * @name MapComponent
  * @type Component
  * @extends React.Component
  */
-class ZoopsMapComponent extends React.Component {
+
+class MapComponent extends React.Component {
   constructor (props) {
     super(props);
-    this.state = this.getStateFromStore();
-  }
-
-  componentWillMount () {
-    MapStore.addChangeListener(this.onChange.bind(this));
-  }
-
-  componentWillUnMount () {
-    MapStore.removeChangeListener(this.onChange.bind(this));
+    this.state = {};
   }
 
   componentDidMount () {
     var mapOptions = {
       zoom: 8,
-      center: {lat: this.state.data.longitude, lng: this.state.data.latitude}
+      center: {
+        lat: this.props.defaultLongitude,
+        lng: this.props.defaultLatitude
+      }
     };
 
     // lazy loading google map api
@@ -61,21 +57,18 @@ class ZoopsMapComponent extends React.Component {
   };
   render () {
     return (
-      <div {... this.props}>
+      <div {...this.props}>
         <div id="map-canvas"></div>
+        {this.setMapMarkers()}
       </div>
     );
-  }
-
-  onChange () {
-    this.setState(this.getStateFromStore());
-    this.setMapMarkers();
   }
 
   setMapMarkers () {
     if (!_mapHandle) return;
     this.clearMarkers();
-    var listing = this.state.data.listing || [];
+    var listing = this.props.dataListing;
+
     for (var i = 0; i < listing.length; i++) {
       var coord = {lat: listing[i].latitude, lng: listing[i].longitude};
       var marker = new window.google.maps.Marker({
@@ -98,9 +91,15 @@ class ZoopsMapComponent extends React.Component {
     }
     _mapMarkers.length = 0;
   }
-
-  getStateFromStore () {
-    return MapStore.getState();
-  }
 }
-export default ZoopsMapComponent;
+
+MapComponent.propTypes = {
+  dataListing: React.PropTypes.array.isRequired
+};
+
+MapComponent.defaultProps = {
+  defaultLatitude: 0.0,
+  defaultLongitude: 51.50,
+  dataListing: []
+};
+export default MapComponent;

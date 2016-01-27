@@ -1,20 +1,15 @@
 import React from 'react';
-import ListStore from '../stores/ListStore';
-import AppActionCreator from '../actions/AppActionCreator';
+import {filter} from 'lodash';
 
 class ListComponent extends React.Component {
 
   constructor (props) {
     super(props);
-    this.state = this.getStateFromStore();
+    this.state = {};
   }
 
-  componentWillMount () {
-    ListStore.addChangeListener(this.onChange.bind(this));
-  }
-
-  componentWillUnMount () {
-    ListStore.removeChangeListener(this.onChange.bind(this));
+  componentDidMount () {
+    this.setSortIndex();
   }
 
   render () {
@@ -24,26 +19,26 @@ class ListComponent extends React.Component {
           <thead className="thead-inverse">
             <tr>
               <th className="property-col" onClick={() => {
-                AppActionCreator.sortByIndex(0);
+                this.setSortIndex();
               }}> Property
             </th>
             <th className="price-col" onClick={() => {
-              AppActionCreator.sortByIndex(1);
+              this.setSortIndex(1);
             }}>Price
           </th>
           <th className="bedrooms-col"
             onClick={() => {
-              AppActionCreator.sortByIndex(2);
+              this.setSortIndex(2);
             }}>Berooms
           </th>
           <th className="published-col" onClick={() => {
-            AppActionCreator.sortByIndex(3);
+            this.setSortIndex(3);
           }}> Published
         </th>
       </tr>
     </thead>
     <tbody>
-      {this.state.listing.map((item, i) => {
+      {this.getSortedList().map((item, i) => {
         var price = Number(item.price);
         return (
           <tr key={item.listing_id + i}>
@@ -64,13 +59,43 @@ class ListComponent extends React.Component {
     );
   }
 
-  onChange () {
-    this.setState(this.getStateFromStore());
+  filterList () {
+    var listing = this.props.dataListing;
+    return filter(listing, (item) => {
+      return (Number(item.num_bedrooms) > 0 && Number(item.price) > 0);
+    });
   }
 
-  getStateFromStore () {
-    return ListStore.getState();
+  setSortIndex (index) {
+    if (!index) index = 0;
+    var keyMap = [
+      {key: 'agent_name', type: String},
+      {key: 'price', type: Number},
+      {key: 'num_bedrooms', type: Number},
+      {key: 'first_published_date', type: Date}];
+
+    this.setState({
+      sortConfig: keyMap[index]
+    });
+  }
+
+  getSortedList () {
+    var sortConfig = this.state.sortConfig;
+    var filteredList = this.filterList();
+    return filteredList.sort((a, b) => {
+      var aValue = a[sortConfig.key];
+      var bValue = b[sortConfig.key];
+      return (sortConfig.type(aValue) > sortConfig.type(bValue)) ? -1 : 1;
+    });
   }
 }
+
+ListComponent.propTypes = {
+  dataListing: React.PropTypes.array.isRequired
+};
+
+ListComponent.defaultProps = {
+  dataListing: []
+};
 
 export default ListComponent;

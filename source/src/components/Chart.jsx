@@ -1,6 +1,6 @@
 import React from 'react';
 import d3 from 'd3';
-import _ from 'lodash' ;
+import {filter, keys, map, reduce} from 'lodash' ;
 
 class ChartComponent extends React.Component {
   constructor (props) {
@@ -135,7 +135,7 @@ class ChartComponent extends React.Component {
       var LIMIT_KEY = String(LIMIT + '+');
       var bedRoomHash = {};
 
-      var listing = _.filter(this.props.dataListing, (item) => {
+      var listing = filter(this.props.dataListing, (item) => {
         return (Number(item.num_bedrooms) > 0 && Number(item.price) > 0);
       });
 
@@ -159,10 +159,10 @@ class ChartComponent extends React.Component {
       }
 
       return {
-        preservedKeys: _.keys(bedRoomHash),
-        propertyAverages: _.map(bedRoomHash, function (items) {
+        preservedKeys: keys(bedRoomHash),
+        propertyAverages: map(bedRoomHash, function (items) {
           if (items.length < 1) return 0;
-          return Math.round(_.reduce(items, (sum, n) => { return sum + n; }) / items.length);
+          return Math.round(reduce(items, (sum, n) => { return sum + n; }) / items.length);
         })
       };
     }
@@ -172,7 +172,7 @@ ChartComponent.propTypes = {
   dataListing: React.PropTypes.array.isRequired
 };
 
-ChartComponent.defaulTProps = {
+ChartComponent.defaultProps = {
   dataListing: []
 };
 
