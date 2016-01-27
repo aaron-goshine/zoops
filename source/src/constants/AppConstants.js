@@ -1,13 +1,10 @@
-var keyMirror = require('keyMirror');
-
-module.exports = keyMirror({
-  INIT: null,
-  RECEIVE_DATA: null,
-  SORT_BY_INDEX: null,
-  CHANGE_EVENT: null,
-  AUTO_COMPLETE: null,
-  RECEIVE_LISTINGS : null,
-  DOWN_ARROW_SELECT : null,
-  UP_ARROW_SELECT : null,
-  SELECTED_BY_INDEX : null
-});
+export default {
+  INIT: 'initialized',
+  RECEIVE_DATA: 'receive_data',
+  CHANGE_EVENT: 'change_event',
+  AUTO_COMPLETE: 'auto_complete',
+  RECEIVE_LISTINGS: 'receive_listings',
+  DOWN_ARROW_SELECT: 'down_arrow_select',
+  UP_ARROW_SELECT: 'up_arrow_select',
+  SELECTED_BY_INDEX: 'select_by_index'
+};
