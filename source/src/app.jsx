@@ -42,7 +42,6 @@ class Zoops extends React.Component {
 
   render () {
     var dataListing = this.state.data.listing;
-
     return (
       <div className="panel">
         <nav className="navbar navbar-light bg-faded" role="group" >
@@ -75,6 +74,7 @@ class Zoops extends React.Component {
       </nav>
   <section>
     <div className="panel">
+      <h3>{this.getCurrentArea()}</h3>
       <MapComponent className={this.getTCClassName(1)} dataListing={dataListing} />
       <ListComponent className={this.getTCClassName(2)} dataListing={dataListing} />
       <ChartComponent className={this.getTCClassName(3)} dataListing={dataListing} />
@@ -82,6 +82,12 @@ class Zoops extends React.Component {
   </section>
 </div>
     );
+  }
+
+  getCurrentArea () {
+    var dataListing = this.state.data.listing || [];
+    if (dataListing.length < 1) return '';
+    return dataListing[0].post_town + ' ' + dataListing[0].outcode;
   }
 
   onChange () {

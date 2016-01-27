@@ -11,32 +11,39 @@ class ChartComponent extends React.Component {
   render () {
     return (
       <div {...this.props}>
-        <div id='chart'></div>
+        <div ref="chart" id="chart"></div>
         {this.renderChart()}
       </div>
     );
   }
 
   renderChart () {
-    var baseWidth = 420;
-    var svgHeight = 420;
+    var baseWidth = 800;
+    var svgHeight = 400;
     var spacer = 5;
     var margin = 40;
-    var chartHeight = (svgHeight - margin * 1.5);
 
     // Processing data from props
     var dataSource = this.processListing();
     var data = dataSource.propertyAverages;
-    var labelForBeds = dataSource.preservedKeys;
-    var columnCount = data.length;
+    var labels = dataSource.preservedKeys;
 
-    var baseSvgWidth = baseWidth - ((margin * 2) + (spacer * (columnCount - 1)));
-    var columnWidthPerc = ((baseSvgWidth / columnCount) / baseWidth) * 100;
-    var spacerPerc = (spacer / baseWidth) * 100;
+    if (data.length < 1) return;
+
+    var colCount = data.length;
+
+    var viewPortHeight = (svgHeight - margin * 2);
+    var viewPortWidth = (baseWidth - margin * 2);
+
+    var columnWidth = (viewPortWidth - spacer * (colCount - 1)) / colCount;
+
+    var columnWidthPerc = ((columnWidth / viewPortWidth) * 100).toFixed(2);
+
+    var spacerPerc = ((spacer / viewPortWidth) * 100).toFixed(2);
 
     var yScale = d3.scale.linear()
     .domain([d3.max(data), 0])
-    .range([chartHeight, 0]);
+    .range([viewPortHeight, 0]);
 
     d3.select('svg')
     .remove();
@@ -47,22 +54,13 @@ class ChartComponent extends React.Component {
     .attr({'width': '100%', 'height': svgHeight});
 
     // group containing the vertical bars
-    var barGroup = chart.append('g')
-    .attr('transform', () => {
-      return 'translate( ' + margin + ',' + margin + ')';
-    });
+    var barGroup = chart.append('g');
 
     // group containing the top labels
-    var labelGroup = chart.append('g')
-    .attr('transform', () => {
-      return 'translate( ' + margin + ',' + margin + ')';
-    });
+    var labelGroup = chart.append('g');
 
     // group containing the bottom labels
-    var labelGroup2 = chart.append('g')
-    .attr('transform', () => {
-      return 'translate( ' + margin + ',' + margin + ')';
-    });
+    var labelGroup2 = chart.append('g');
 
     // creating and appending the vertical bars to the
     // bars groups
@@ -77,11 +75,11 @@ class ChartComponent extends React.Component {
     })
     .attr('fill', '#ADD8E6')
     .attr('x', (d, i) => {
-      var availableSpace = 100 - columnWidthPerc * columnCount;
-      return (i * (columnWidthPerc + availableSpace / columnCount - 1)) + '%';
+      var colWithSpacePerc = Number(columnWidthPerc) + Number(spacerPerc);
+      return (i * colWithSpacePerc) + '%';
     })
     .attr('y', (d, i) => {
-      return (chartHeight - yScale(d));
+      return (viewPortHeight - yScale(d));
     });
 
     // Creating and appending text elements to server as the top
@@ -93,11 +91,12 @@ class ChartComponent extends React.Component {
     .attr('width', columnWidthPerc + '%')
     .attr('text-anchor', 'middle')
     .attr('x', (d, i) => {
-      var availableSpace = 100 - columnWidthPerc * columnCount;
-      return (i * ((columnWidthPerc + availableSpace / columnCount - 1)) + columnWidthPerc / 2) + '%';
+      var colWithSpacePerc = Number(columnWidthPerc) + Number(spacerPerc);
+      return ((i * colWithSpacePerc) + columnWidthPerc * 0.5) + '%';
     })
     .attr('y', (d, i) => {
-      return (chartHeight - margin * 0.5 - yScale(d));
+      var x = (viewPortHeight - margin * 0.5 - yScale(d));
+      return x > margin ? x : margin;
     })
     .text((d) => {
       var mil = 1000000;
@@ -116,12 +115,12 @@ class ChartComponent extends React.Component {
     .append('text')
     .attr('text-anchor', 'middle')
     .attr('x', (d, i) => {
-      var availableSpace = 100 - columnWidthPerc * columnCount;
-      return (i * ((columnWidthPerc + availableSpace / columnCount - 1)) + columnWidthPerc / 2) + '%';
+      var colWithSpacePerc = Number(columnWidthPerc) + Number(spacerPerc);
+      return ((i * colWithSpacePerc) + columnWidthPerc * 0.5) + '%';
     })
-    .attr('y', chartHeight - margin * 0.5)
+    .attr('y', viewPortHeight - margin * 0.5)
     .text((d, i) => {
-      return labelForBeds[i] + ' beds';
+      return labels[i] + ' beds';
     });
   }
 
