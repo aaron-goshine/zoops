@@ -1,27 +1,20 @@
 import React from 'react';
-import ChartStore from '../stores/ChartStore';
 import d3 from 'd3';
+import _ from 'lodash' ;
 
 class ChartComponent extends React.Component {
   constructor (props) {
     super(props);
-    this.state = this.getStateFromStore();
+    this.state = {};
   }
 
   render () {
     return (
-      <div {...this.props} className='tab-content'>
+      <div {...this.props}>
         <div id='chart'></div>
+        {this.renderChart()}
       </div>
     );
-  }
-
-  componentWillMount () {
-    ChartStore.addChangeListener(this.onChange.bind(this));
-  }
-
-  componentWillUnMount () {
-    ChartStore.removeChangeListener(this.onChange.bind(this));
   }
 
   renderChart () {
@@ -30,8 +23,11 @@ class ChartComponent extends React.Component {
     var spacer = 5;
     var margin = 40;
     var chartHeight = (svgHeight - margin * 1.5);
-    var data = this.state.propertyAverages;
-    var labelForBeds = this.state.preservedKeys;
+
+    // Processing data from props
+    var dataSource = this.processListing();
+    var data = dataSource.propertyAverages;
+    var labelForBeds = dataSource.preservedKeys;
     var columnCount = data.length;
 
     var baseSvgWidth = baseWidth - ((margin * 2) + (spacer * (columnCount - 1)));
@@ -129,14 +125,55 @@ class ChartComponent extends React.Component {
     });
   }
 
-  onChange () {
-    this.setState(this.getStateFromStore());
-    this.renderChart();
-  }
+    /**
+     * @function processListing
+     * @return {array}
+     */
 
-  getStateFromStore () {
-    return ChartStore.getState();
-  }
+    processListing () {
+      var LIMIT = 5;
+      var LIMIT_KEY = String(LIMIT + '+');
+      var bedRoomHash = {};
+
+      var listing = _.filter(this.props.dataListing, (item) => {
+        return (Number(item.num_bedrooms) > 0 && Number(item.price) > 0);
+      });
+
+      for (var i = 0; i < listing.length; i++) {
+        var numberOfBeds = Number(listing[i].num_bedrooms);
+        // grouping bedrooms lest than LIMIT which is currently set to five
+        if (!bedRoomHash[numberOfBeds] && numberOfBeds < LIMIT) {
+          bedRoomHash[numberOfBeds] = [];
+          bedRoomHash[numberOfBeds].push(Number(listing[i].price));
+        } else if (bedRoomHash[numberOfBeds] && numberOfBeds < LIMIT) {
+          bedRoomHash[numberOfBeds].push(Number(listing[i].price));
+        }
+
+        // grouping bedrooms greater that or equal LIMIT which is currently set to five
+        if (!bedRoomHash[LIMIT_KEY] && numberOfBeds >= LIMIT) {
+          bedRoomHash[LIMIT_KEY] = [];
+          bedRoomHash[LIMIT_KEY].push(Number(listing[i].price));
+        } else if (bedRoomHash[LIMIT_KEY] && numberOfBeds >= LIMIT) {
+          bedRoomHash[LIMIT_KEY].push(Number(listing[i].price));
+        }
+      }
+
+      return {
+        preservedKeys: _.keys(bedRoomHash),
+        propertyAverages: _.map(bedRoomHash, function (items) {
+          if (items.length < 1) return 0;
+          return Math.round(_.reduce(items, (sum, n) => { return sum + n; }) / items.length);
+        })
+      };
+    }
 }
+
+ChartComponent.propTypes = {
+  dataListing: React.PropTypes.array.isRequired
+};
+
+ChartComponent.defaulTProps = {
+  dataListing: []
+};
 
 export default ChartComponent;

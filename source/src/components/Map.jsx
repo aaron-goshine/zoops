@@ -61,7 +61,7 @@ class ZoopsMapComponent extends React.Component {
   };
   render () {
     return (
-      <div {... this.props} className="tab-content">
+      <div {... this.props}>
         <div id="map-canvas"></div>
       </div>
     );

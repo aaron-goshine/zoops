@@ -19,7 +19,7 @@ class ListComponent extends React.Component {
 
   render () {
     return (
-      <div {... this.props} className="tab-content  ">
+      <div {... this.props}>
         <table className="table">
           <thead className="thead-inverse">
             <tr>
@@ -34,7 +34,7 @@ class ListComponent extends React.Component {
           <th className="bedrooms-col"
             onClick={() => {
               AppActionCreator.sortByIndex(2);
-            }}>Bedrooms
+            }}>Berooms
           </th>
           <th className="published-col" onClick={() => {
             AppActionCreator.sortByIndex(3);
