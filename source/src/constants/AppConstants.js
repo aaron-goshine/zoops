@@ -6,5 +6,7 @@ export default {
   RECEIVE_LISTINGS: 'receive_listings',
   DOWN_ARROW_SELECT: 'down_arrow_select',
   UP_ARROW_SELECT: 'up_arrow_select',
-  SELECTED_BY_INDEX: 'select_by_index'
+  SELECTED_BY_INDEX: 'select_by_index',
+  LISTINGS_REQ: 'listings_request',
+  AUTO_COMPLETE_REQ: 'auto_complete_request'
 };

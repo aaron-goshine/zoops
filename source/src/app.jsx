@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import MapComponent from './components/Map';
 import ChartComponent from './components/Chart';
 import ListComponent from './components/List';
+import Preloader from './components/Preloader';
 import SearchComponent from './components/Search';
 import AppActionCreator from './actions/AppActionCreator';
 import Store from './stores/ZoopsAppStore';
@@ -20,7 +21,7 @@ window.React = React;
 class Zoops extends React.Component {
   constructor (props) {
     super(props);
-    // default state of the application is the make
+    // default state of the application is to make
     // Tab #1 visible
     this.state = {
       'tab': 1,
@@ -80,6 +81,7 @@ class Zoops extends React.Component {
       <ChartComponent className={this.getTCClassName(3)} dataListing={dataListing} />
     </div>
   </section>
+  <Preloader/>
 </div>
     );
   }

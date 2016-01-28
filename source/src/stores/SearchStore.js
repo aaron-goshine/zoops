@@ -5,11 +5,16 @@ var _ = require('lodash');
 
 var _state = {
   suggestions: [],
-  selectedIndex: 0
+  selectedIndex: 0,
+  isLoading: false
 };
 
 function setItems (data) {
   _state.suggestions = data.suggestions || [];
+}
+
+function setLoadingState (isLoading) {
+  _state.isLoading = isLoading || false;
 }
 
 function clearItems () {
@@ -42,6 +47,9 @@ var SearchStore = _.assign(new EventEmitter(), {
   getState () {
     return _state;
   },
+  getIsLoading () {
+    return _state.isLoading;
+  },
   getSuggestions () {
     return _state.suggestions;
   },
@@ -72,7 +80,11 @@ AppDispatcher.register((payload) => {
   switch (action.actionType) {
     case AppConstants.AUTO_COMPLETE:
       setItems(action.data);
+      setLoadingState(false);
       SearchStore.emitChange();
+      break;
+    case AppConstants.AUTO_COMPLETE_REQ:
+      setLoadingState(true);
       break;
     case AppConstants.CLEAR_AUTO_COMPLETE:
       clearItems();

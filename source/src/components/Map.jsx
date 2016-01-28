@@ -1,5 +1,4 @@
 import React from 'react';
-import MapStore from '../stores/MapStore';
 import _ from 'lodash';
 /**
  * @private

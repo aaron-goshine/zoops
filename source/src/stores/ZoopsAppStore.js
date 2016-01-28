@@ -4,16 +4,24 @@ var AppConstants = require('../constants/AppConstants');
 var _ = require('lodash');
 
 var _state = {
-  data: null
+  data: null,
+  isLoading: false
 };
 
 function setItems (data) {
   _state.data = data;
 }
 
+function setLoadingState (isLoading) {
+  _state.isLoading = isLoading || false;
+}
+
 var ZoopsAppStore = _.assign(new EventEmitter(), {
   getState () {
     return _state;
+  },
+  getIsLoading () {
+    return _state.isLoading;
   },
   emitChange () {
     this.emit(AppConstants.CHANGE);
@@ -31,7 +39,11 @@ AppDispatcher.register(function (payload) {
   switch (action.actionType) {
     case AppConstants.RECEIVE_LISTINGS:
       setItems(action.data);
+      setLoadingState(false);
       ZoopsAppStore.emitChange();
+      break;
+    case AppConstants.LISTINGS_REQ:
+      setLoadingState(true);
       break;
   }
   return true;
