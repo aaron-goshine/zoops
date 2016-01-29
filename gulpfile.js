@@ -24,7 +24,7 @@ var sass = require('gulp-sass');
 var babel = require('babelify');
 var buffer = require('vinyl-buffer');
 
-var sourceFile = './source/src/app.jsx';
+var sourceFile = './source/app.jsx';
 var publicFolder = './public/';
 var scriptDestFolder = './public/scripts';
 var stylesDestFolder = './public/styles';

@@ -5,13 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "babel": "^5.8.23",
-    "ejs": "2.3.3",
     "babelify": "^6.3.0",
     "bootstrap-sass": "^3.3.5",
     "browserify": "latest",
     "browserify-shim": "latest",
     "d3": "^3.5.6",
     "del": "latest",
+    "ejs": "2.3.3",
     "express": "latest",
     "express-livereload": "0.0.24",
     "flux": "latest",
@@ -32,6 +32,7 @@
     "gulp-util": "latest",
     "gulp-webserver": "latest",
     "jest": "latest",
+    "karma": "^0.13.19",
     "keymirror": "latest",
     "lodash": "latest",
     "path": "latest",
@@ -41,12 +42,12 @@
     "react-googlemaps": "latest",
     "react-intl": "latest",
     "reactify": "latest",
+    "request": "^2.64.0",
     "reqwest": "latest",
     "superagent": "^1.7.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "latest",
-    "watchify": "latest",
-    "request": "^2.64.0"
+    "watchify": "latest"
   },
   "scripts": {
     "test": "jtest",
@@ -74,5 +75,9 @@
   "browserify-shim": {
     "jquery": "$"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jasmine-core": "^2.4.1",
+    "jshint": "^2.9.1",
+    "karma-jasmine": "^0.3.6"
+  }
 }
